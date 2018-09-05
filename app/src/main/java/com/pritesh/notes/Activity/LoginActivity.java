@@ -25,6 +25,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
 import com.pritesh.notes.Globals;
 import com.pritesh.notes.R;
 
@@ -96,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = Globals.getAuth().getCurrentUser();
-                            updateUI(user);
+                            updateDatabase(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -105,6 +106,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 });
+    }
+
+    private void updateDatabase(FirebaseUser user) {
+        Globals.getDatabaseReference().child(getString(R.string.users)).child(user.getUid()).setValue(user);
+        updateUI(user);
+
     }
 
     @Override

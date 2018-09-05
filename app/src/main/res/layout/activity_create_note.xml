@@ -8,7 +8,7 @@
     tools:context=".Activity.CreateNoteActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/etTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -19,14 +19,13 @@
         android:hint="Title"
         android:inputType="textMultiLine|textPersonName"
         android:text="Title"
-        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/etDescription"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -38,9 +37,8 @@
         android:gravity="top"
         android:hint="Description"
         android:inputType="textPersonName"
-        android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
 </android.support.constraint.ConstraintLayout>
