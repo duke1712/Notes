@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Notes</string>
+    <string name="name">Name</string>
+    <string name="created">Created</string>
+</resources>
