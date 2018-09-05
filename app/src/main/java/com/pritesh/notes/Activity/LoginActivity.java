@@ -1,4 +1,4 @@
-package com.pritesh.notes;
+package com.pritesh.notes.Activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -25,6 +25,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.pritesh.notes.Globals;
+import com.pritesh.notes.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
