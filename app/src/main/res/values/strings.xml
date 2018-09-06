@@ -4,4 +4,8 @@
     <string name="created">Created</string>
     <string name="users">USERS</string>
     <string name="notes">NOTES</string>
+    <string name="title">title</string>
+    <string name="id">id</string>
+    <string name="description">description</string>
+    <string name="created_small">created</string>
 </resources>

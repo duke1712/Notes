@@ -1,4 +1,4 @@
-package com.pritesh.notes;
+package com.pritesh.notes.Models;
 
 public class Note {
     private String id;
