@@ -24,6 +24,8 @@ public class CreateNoteActivity extends AppCompatActivity {
     private EditText etTitle, etDescription;
     private String id, title, description;
     private ProgressBar progressBar;
+    private MenuItem doneMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +49,15 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        createNote();
         super.onBackPressed();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mymenu,menu);
+        doneMenu = menu.findItem(R.id.done);
+        doneMenu.setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -60,8 +65,9 @@ public class CreateNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.done:
-                note=new Note(null,"02-03-2018",etTitle.getText().toString(),etDescription.getText().toString());
+
                 createNote();
+                break;
             case android.R.id.home:
                 createNote();
         }
@@ -75,6 +81,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void createNote() {
+        note=new Note(null,"02-03-2018",etTitle.getText().toString(),etDescription.getText().toString());
         progressBar.setVisibility(View.VISIBLE);
         if(id!=null && !id.equalsIgnoreCase("")){
             Map<String,Object> updateObject = new HashMap<>();

@@ -5,12 +5,22 @@ public class Note {
     private String created;
     private String title;
     private String description;
+    private  boolean isSelected;
 
     public Note(String id,String created, String title, String description) {
         this.created = created;
         this.title = title;
         this.description = description;
         this.id=id;
+        isSelected=false;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public String getId() {

@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressBar.setVisibility(View.GONE);
         if(currentUser!=null){
             startActivity(new Intent(getBaseContext(),MainActivity.class));
+            finish();
         }
     }
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {

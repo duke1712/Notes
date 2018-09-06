@@ -23,7 +23,7 @@ import java.util.List;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
     private Context context;
     private List<Note> noteList;
-    private boolean isSelected = false;
+    public static boolean isSelected = false;
     private int selectedCount = 0;
     private SelectListener selectListener;
     public NotesAdapter(Context context, List<Note> noteList, SelectListener selectListener) {
@@ -46,23 +46,24 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         holder.tvTitle.setText(noteList.get(position).getTitle());
         holder.tvCreated.setText(noteList.get(position).getCreated());
         holder.tvDescription.setText(noteList.get(position).getDescription());
-//        holder.cardView.setCardBackgroundColor(R.drawable.card_selector);
+        holder.cardView.setCardBackgroundColor(context.getColor(android.R.color.white));
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
             @Override
             public void onClick(View v) {
                 if(isSelected){
-                    if(holder.cardView.isSelected()) {
+                    if(noteList.get(position).isSelected()) {
                         selectedCount--;
                         holder.cardView.setCardBackgroundColor(context.getColor(android.R.color.white));
-                        holder.cardView.setSelected(false);
+                        noteList.get(position).setSelected(false);
                         selectListener.selected(false,position);
                         if(selectedCount==0){
                             isSelected=false;
                         }
                     }else{
                         selectedCount++;
-                        holder.cardView.setSelected(true);
+                        noteList.get(position).setSelected(true);
                         holder.cardView.setCardBackgroundColor(context.getColor(R.color.cardBackground));
                         selectListener.selected(true,position);
                     }
@@ -89,7 +90,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
             @Override
             public boolean onLongClick(View v) {
                 if(!isSelected) {
-                    holder.cardView.setSelected(true);
+                    noteList.get(position).setSelected(true);
                     isSelected = true;
                     holder.cardView.setCardBackgroundColor(context.getColor(R.color.cardBackground));
                     selectedCount = 1;
@@ -106,7 +107,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         return noteList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView tvTitle, tvDescription, tvCreated;
         private CardView cardView;
         public ViewHolder(View itemView) {
