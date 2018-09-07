@@ -18,7 +18,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.MainActivity"></activity>
-        <activity android:name=".Activity.CreateNoteActivity"></activity>
+        <activity android:name=".Activity.CreateNoteActivity"
+              android:windowSoftInputMode="adjustResize"
+            />
 
         <meta-data
             android:name="preloaded_fonts"
