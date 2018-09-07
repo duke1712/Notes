@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,13 +43,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // View Initialising
         progressBar=findViewById(R.id.progressBar);
+
+
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(this);
+
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -64,10 +69,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.clearDefaultAccountAndReconnect();
+        }
+
     }
     private void signIn() {
         Log.d(TAG,"SignIn()");
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -86,6 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finish();
         }
     }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -98,21 +109,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = Globals.getAuth().getCurrentUser();
-                            updateDatabase(user);
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
+                            if(task.getException() instanceof FirebaseNetworkException){
+                                Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                Toast.makeText(getApplicationContext(),getString(R.string.noInternet),Toast.LENGTH_SHORT).show();
+                                updateUI(null);
+                            }
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(getApplicationContext(),"Login Failed",Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
                     }
                 });
-    }
-
-    private void updateDatabase(FirebaseUser user) {
-//        Globals.getDatabaseReference().child(getString(R.string.users)).child(user.getUid()).setValue(user).add;
-        updateUI(user);
-
     }
 
     @Override

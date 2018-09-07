@@ -11,9 +11,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Globals extends Application{
+
     private static FirebaseAuth mAuth;
     private static DatabaseReference databaseReference;
     private static Globals global;
+
+    // Private Constructor for Singleton Pattern
     private Globals(){
 
     }
@@ -24,16 +27,20 @@ public class Globals extends Application{
         }
         return  global;
     }
+
+//    Provides Firebase Auth Instance
     public static FirebaseAuth getAuth(){
         if(mAuth!=null){
             return mAuth;
         }
         else {
             mAuth = FirebaseAuth.getInstance();
+
             return mAuth;
         }
     }
 
+//    Provides Realtime-Database Reference
     public static DatabaseReference getDatabaseReference(){
         if(databaseReference!=null){
             return databaseReference;

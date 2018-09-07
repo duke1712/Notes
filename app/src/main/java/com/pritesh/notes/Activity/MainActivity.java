@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         fetchData();
     }
 
@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onCreateOptionsMenu(menu);
     }
 
+//    Filter the  list on the basis of the query string
     private void filter(String newText) {
         if(newText.equalsIgnoreCase("")){
             filteredNoteList.clear();
@@ -193,13 +194,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+//    function to delete notes
     private void deleteNotes() {
         progressBar.setVisibility(View.VISIBLE);
+//        Map containing id to delete the notes
         Map<String,Object> updateObject = new HashMap<>();
         for(int i = 0; i<selectedNotes.size();i++) {
             updateObject.put(selectedNotes.get(i).getId(),null);
             filteredNoteList.remove(selectedNotes.get(i));
         }
+
         NotesAdapter.isSelected=false;
         Globals.getDatabaseReference().child(getString(R.string.notes))
                 .child(Globals.getAuth().getUid()).updateChildren(updateObject)
@@ -228,10 +232,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void selected(boolean bool, int pos) {
+//        check card selected or not
         if(bool){
+//            add selected note to another list
             selectedNotes.add(filteredNoteList.get(pos));
             deleteMenu.setVisible(true);
         }else{
+//            remove selected note from list
             selectedNotes.remove(filteredNoteList.get(pos));
             if(selectedNotes.size()==0)
                 deleteMenu.setVisible(false);

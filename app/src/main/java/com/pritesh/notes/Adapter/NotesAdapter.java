@@ -24,16 +24,19 @@ import com.pritesh.notes.R;
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
+
     private Context context;
     private List<Note> noteList;
     public static boolean isSelected = false;
     private int selectedCount = 0;
     private SelectListener selectListener;
+
     public NotesAdapter(Context context, List<Note> noteList, SelectListener selectListener) {
         this.context = context;
         this.noteList = noteList;
         this.selectListener=selectListener;
     }
+
 
     @NonNull
     @Override
@@ -47,29 +50,39 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
+//        Hide Title if not available
         if(noteList.get(position).getTitle().equalsIgnoreCase(""))
             holder.tvTitle.setVisibility(View.GONE);
         else
             holder.tvTitle.setVisibility(View.VISIBLE);
 
+        //        Hide description if not available
         if(noteList.get(position).getDescription().equalsIgnoreCase(""))
             holder.tvDescription.setVisibility(View.GONE);
         else
             holder.tvDescription.setVisibility(View.VISIBLE);
+
+//        Populating views
         holder.tvTitle.setText(noteList.get(position).getTitle());
         holder.tvCreated.setText(noteList.get(position).getCreated());
         holder.tvDescription.setText(noteList.get(position).getDescription());
+
+//        Background for unselected cards
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             holder.cardView.setCardBackgroundColor(context.getColor(android.R.color.white));
         }else{
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(android.R.color.white));
         }
 
+//        Listener for click even on card
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
             @Override
             public void onClick(View v) {
+//                Decide whether any card is selected or not
                 if(isSelected){
+
+//                    If note is selected deselect it else select it
                     if(noteList.get(position).isSelected()) {
                         selectedCount--;
                         holder.cardView.setCardBackgroundColor(context.getColor(android.R.color.white));
@@ -86,22 +99,24 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
                     }
 
 
-                }else{
-                Note note = noteList.get(position);
-                Intent intent = new Intent(context, CreateNoteActivity.class);
-                intent.putExtra(context.getString(R.string.title),note.getTitle());
-                intent.putExtra(context.getString(R.string.id),note.getId());
-                intent.putExtra(context.getString(R.string.description),note.getDescription());
-                intent.putExtra(context.getString(R.string.created),note.getCreated());
-                MainActivity mainActivity = ((MainActivity)((Activity)context));
+                }
+                else {
+                    Note note = noteList.get(position);
+                    Intent intent = new Intent(context, CreateNoteActivity.class);
+                    intent.putExtra(context.getString(R.string.title),note.getTitle());
+                    intent.putExtra(context.getString(R.string.id),note.getId());
+                    intent.putExtra(context.getString(R.string.description),note.getDescription());
+                    intent.putExtra(context.getString(R.string.created),note.getCreated());
+                    MainActivity mainActivity = ((MainActivity)((Activity)context));
 
-                context.startActivity(intent);
+                    context.startActivity(intent);
 
-                mainActivity.overridePendingTransition(R.anim.zoom_enter,R.anim.zoom_exit);
+                    mainActivity.overridePendingTransition(R.anim.zoom_enter,R.anim.zoom_exit);
                 }
             }
         });
 
+//        Long click listener to initiate select mode
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @SuppressLint("NewApi")
             @Override

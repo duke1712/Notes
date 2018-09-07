@@ -37,9 +37,13 @@ public class CreateNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+//        Retrive data from previous Activity
         id = getIntent().getStringExtra(getString(R.string.id));
         title = getIntent().getStringExtra(getString(R.string.title));
         description = getIntent().getStringExtra(getString(R.string.description));
+
+//        Initialise all UI elements
         initialize();
 
     }
@@ -48,6 +52,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         etDescription=findViewById(R.id.etDescription);
         etTitle=findViewById(R.id.etTitle);
         progressBar = findViewById(R.id.progressBar);
+
+//        If data recieved from activity then populate
         if(id!=null && !id.equalsIgnoreCase("")){
             etTitle.setText(title);
             etDescription.setText(description);
@@ -64,6 +70,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.mymenu,menu);
         doneMenu = menu.findItem(R.id.done);
         doneMenu.setVisible(true);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -80,6 +87,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(),getString(R.string.noInternet),Toast.LENGTH_SHORT).show();
                 }
                 break;
+//                Case for back button on actionbar clicked
             case android.R.id.home:
                 if(etTitle.getText().length() != 0 && etDescription.getText().length() != 0) {
                     if(Globals.isNetworkAvailable(getBaseContext())) {
@@ -100,9 +108,13 @@ public class CreateNoteActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.zoom_enter,R.anim.zoom_exit);
     }
 
+//    Upload the note to database
     private void createNote() {
+//        create Note object with data
         note=new Note(null,getDate(),etTitle.getText().toString().trim(),etDescription.getText().toString().trim());
+
         progressBar.setVisibility(View.VISIBLE);
+//      check whether new note or existing
         if(id!=null && !id.equalsIgnoreCase("")){
             Map<String,Object> updateObject = new HashMap<>();
             updateObject.put(getString(R.string.title),etTitle.getText().toString().trim());
@@ -145,6 +157,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         }
     }
 
+//    Function to return today's date
     private String getDate(){
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
