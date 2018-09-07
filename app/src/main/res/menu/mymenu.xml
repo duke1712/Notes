@@ -10,28 +10,28 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/sort"
-        android:title=""
+        android:title="Sort"
         app:showAsAction="always"
         android:visible="false"
         android:icon="@drawable/ic_sort"
         />
     <item
         android:id="@+id/delete"
-        android:title=""
+        android:title="Delete"
         app:showAsAction="always"
         android:visible="false"
         android:icon="@drawable/ic_delete"
         />
     <item
         android:id="@+id/logout"
-        android:title=""
-        app:showAsAction="always"
+        android:title="Logout"
+        app:showAsAction="collapseActionView"
         android:visible="false"
         android:icon="@drawable/ic_logout"
         />
     <item
         android:id="@+id/done"
-        android:title=""
+        android:title="Done"
         app:showAsAction="always"
         android:visible="false"
         android:icon="@drawable/ic_done"

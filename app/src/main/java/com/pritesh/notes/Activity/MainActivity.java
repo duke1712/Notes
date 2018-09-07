@@ -1,7 +1,9 @@
 package com.pritesh.notes.Activity;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -177,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 deleteNotes();
                 break;
             case R.id.logout:
-                logout();
+                showdialog();
                 break;
             case R.id.sort:
                 Collections.reverse(filteredNoteList);
@@ -229,7 +231,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+    void showdialog(){
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Are you sure you want to logout?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        logout();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
+        alertDialog.show();
+    }
     @Override
     public void selected(boolean bool, int pos) {
 //        check card selected or not
