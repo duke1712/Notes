@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -45,10 +46,24 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+
+        if(noteList.get(position).getTitle().equalsIgnoreCase(""))
+            holder.tvTitle.setVisibility(View.GONE);
+        else
+            holder.tvTitle.setVisibility(View.VISIBLE);
+
+        if(noteList.get(position).getDescription().equalsIgnoreCase(""))
+            holder.tvDescription.setVisibility(View.GONE);
+        else
+            holder.tvDescription.setVisibility(View.VISIBLE);
         holder.tvTitle.setText(noteList.get(position).getTitle());
         holder.tvCreated.setText(noteList.get(position).getCreated());
         holder.tvDescription.setText(noteList.get(position).getDescription());
-        holder.cardView.setCardBackgroundColor(context.getColor(android.R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            holder.cardView.setCardBackgroundColor(context.getColor(android.R.color.white));
+        }else{
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(android.R.color.white));
+        }
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")

@@ -1,8 +1,10 @@
 package com.pritesh.notes.Activity;
 
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +18,9 @@ import com.pritesh.notes.Globals;
 import com.pritesh.notes.Models.Note;
 import com.pritesh.notes.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +30,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private String id, title, description;
     private ProgressBar progressBar;
     private MenuItem doneMenu;
+    private final String TAG = "CREATE_NOTE_ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         title = getIntent().getStringExtra(getString(R.string.title));
         description = getIntent().getStringExtra(getString(R.string.description));
         initialize();
+
     }
 
     private void initialize() {
@@ -49,7 +56,6 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        createNote();
         super.onBackPressed();
     }
 
@@ -65,11 +71,25 @@ public class CreateNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.done:
-
-                createNote();
+                if(etTitle.getText().length() == 0 && etDescription.getText().length() == 0){
+                    Toast.makeText(getBaseContext(), R.string.enter_title_description,Toast.LENGTH_SHORT).show();
+                }else {
+                    if(Globals.isNetworkAvailable(getBaseContext()))
+                        createNote();
+                    else
+                        Toast.makeText(getBaseContext(),getString(R.string.noInternet),Toast.LENGTH_SHORT).show();
+                }
                 break;
             case android.R.id.home:
-                createNote();
+                if(etTitle.getText().length() != 0 && etDescription.getText().length() != 0) {
+                    if(Globals.isNetworkAvailable(getBaseContext())) {
+                        createNote();
+                    }else{
+                        Toast.makeText(getBaseContext(),getString(R.string.noInternet),Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                    super.onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -81,13 +101,13 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void createNote() {
-        note=new Note(null,"02-03-2018",etTitle.getText().toString(),etDescription.getText().toString());
+        note=new Note(null,getDate(),etTitle.getText().toString().trim(),etDescription.getText().toString().trim());
         progressBar.setVisibility(View.VISIBLE);
         if(id!=null && !id.equalsIgnoreCase("")){
             Map<String,Object> updateObject = new HashMap<>();
-            updateObject.put(getString(R.string.title),etTitle.getText().toString());
-            updateObject.put(getString(R.string.description),etDescription.getText().toString());
-            updateObject.put(getString(R.string.created_small),"12-12-12");
+            updateObject.put(getString(R.string.title),etTitle.getText().toString().trim());
+            updateObject.put(getString(R.string.description),etDescription.getText().toString().trim());
+            updateObject.put(getString(R.string.created_small),getDate());
             Globals.getDatabaseReference()
                     .child(getString(R.string.notes))
                     .child(Globals.getAuth().getCurrentUser().getUid()).child(id)
@@ -123,5 +143,13 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private String getDate(){
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
+        Log.d(TAG,simpleDateFormat.format(date));
+        return simpleDateFormat.format(date);
     }
 }
