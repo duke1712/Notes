@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.pritesh.notes.Activity.CreateNoteActivity;
@@ -74,8 +76,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
                 Intent intent = new Intent(context, CreateNoteActivity.class);
                 intent.putExtra(context.getString(R.string.title),note.getTitle());
                 intent.putExtra(context.getString(R.string.id),note.getId());
-                intent.putExtra(context.getString(R.string.description),note.getTitle());
-                intent.putExtra(context.getString(R.string.created),note.getTitle());
+                intent.putExtra(context.getString(R.string.description),note.getDescription());
+                intent.putExtra(context.getString(R.string.created),note.getCreated());
                 MainActivity mainActivity = ((MainActivity)((Activity)context));
 
                 context.startActivity(intent);

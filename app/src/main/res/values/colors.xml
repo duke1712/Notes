@@ -5,7 +5,7 @@
     <color name="textColor">#2e475b</color>
     <!--<color name="colorPrimaryDark">#5fbed1</color>-->
     <color name="colorPrimaryDark">#f99f00</color>
-    <color name="colorAccent">#000000</color>
+    <color name="colorAccent">#ffffff</color>
     <color name="cardBackground">#ffe97b</color>
 
 </resources>

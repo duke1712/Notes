@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void updateDatabase(FirebaseUser user) {
-        Globals.getDatabaseReference().child(getString(R.string.users)).child(user.getUid()).setValue(user);
+//        Globals.getDatabaseReference().child(getString(R.string.users)).child(user.getUid()).setValue(user).add;
         updateUI(user);
 
     }
@@ -118,9 +118,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d(TAG,"onActivityResult()");
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            Log.d(TAG,"RC_SIGN_IN");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -128,6 +129,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
+                Toast.makeText(getApplicationContext(), R.string.tryAgain,Toast.LENGTH_SHORT).show();
                 Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
@@ -139,7 +141,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.sign_in_button:
                 progressBar.setVisibility(View.VISIBLE);
+                if(Globals.getGlobal().isNetworkAvailable(getBaseContext()))
                 signIn();
+                else{
+                    Toast.makeText(getApplicationContext(), R.string.noInternet,Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }

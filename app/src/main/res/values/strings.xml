@@ -9,4 +9,6 @@
     <string name="description">description</string>
     <string name="created_small">created</string>
     <string name="search">Search</string>
+    <string name="noInternet">You are not connected to the internet. Please try again</string>
+    <string name="tryAgain">Please try again.</string>
 </resources>
